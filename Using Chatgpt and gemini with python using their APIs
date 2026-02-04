@@ -1,0 +1,724 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/rizabukhari/Agentic-AI-projects/blob/main/Using%20Chatgpt%20and%20gemini%20with%20python%20using%20their%20APIs\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "fb6rdwlCsCGt"
+      },
+      "source": [
+        "# Using ChatGPT or Google Gemini with Python for real-world tasks using thier APIs"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "2evPp14fy258"
+      },
+      "outputs": [],
+      "source": [
+        "!pip install openai --quiet"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import openai\n",
+        "openai.__version__"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "8TqiDPJzzkTN",
+        "outputId": "321045d0-8ccf-4ebf-a899-b53ee6bd3206"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'2.12.0'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 2
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# !pip install openai==2.12.0 --quiet   # this how to install a very specific version of the package"
+      ],
+      "metadata": {
+        "id": "XfTmRA9-z6R9"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "5N_Lly09l0P9"
+      },
+      "source": [
+        "## Optional: Install Google Gemini\n",
+        "\n",
+        "Google Gemini API is free (till now). You can get a key [here](https://aistudio.google.com/app/apikey), just need to sign in with your google account. Gemini may not be available fully in EU."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "UKbTnx8pl8kt",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "6ec7cd82-4731-4f8b-fd2b-20272ebdf035"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m53.3/53.3 kB\u001b[0m \u001b[31m2.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m713.3/713.3 kB\u001b[0m \u001b[31m14.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m234.9/234.9 kB\u001b[0m \u001b[31m9.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+            "google-colab 1.0.0 requires google-auth==2.43.0, but you have google-auth 2.47.0 which is incompatible.\u001b[0m\u001b[31m\n",
+            "\u001b[0m"
+          ]
+        }
+      ],
+      "source": [
+        "# !pip install -q -U google-generativeai\n",
+        "!pip install -q -U google-genai"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "CiwGjVWK4q6F"
+      },
+      "source": [
+        "## Load OpenAI API Credentials\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "ryheOZuXxa41"
+      },
+      "outputs": [],
+      "source": [
+        "# Step 2: import keys for openai and Assign environment variable\n",
+        "from google.colab import userdata\n",
+        "import os\n",
+        "os.environ[\"OPENAI_API_KEY\"] = userdata.get('OPENAI_API_KEY')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Step 3: Call the Responses API for accessing the model\n",
+        "from openai import OpenAI\n",
+        "client = OpenAI()\n",
+        "\n",
+        "response = client.responses.create(\n",
+        "    model=\"gpt-5-nano\",\n",
+        "    input=\"Explain Generative AI in 2 bullet points.\"\n",
+        ")\n",
+        "\n",
+        "print(response.output_text)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rsKN2CKh_Z7k",
+        "outputId": "e4c73b12-65cc-4f3b-cd5e-c1dc16e315ce"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "- Generative AI refers to models that learn from large datasets to create new, original content—text, images, music, code—rather than just analyze or classify data (examples: large language models, GANs, VAEs).\n",
+            "- It works by sampling from learned distributions or conditioning on prompts to generate outputs, enabling creativity and automation while bringing challenges like bias, misinformation, and copyright considerations.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "LS7koM2emZ_M"
+      },
+      "source": [
+        "## Load Gemini API credentials\n",
+        "\n",
+        "Run this section only if you are using Google Gemini"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Same thing for Gemini\n",
+        "import os\n",
+        "from google import genai\n",
+        "os.environ[\"GEMINI_API_KEY\"] = userdata.get('GEMINI_API_KEY')\n",
+        "\n",
+        "client = genai.Client()\n",
+        "response = client.models.generate_content(\n",
+        "    model=\"gemini-2.5-flash\", contents=\"Explain Generative AI in 2 bullet points.\"\n",
+        "    )\n",
+        "\n",
+        "print(response.text)"
+      ],
+      "metadata": {
+        "id": "2NaVRkFIM0Mf",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "a102dd71-8861-4d92-f874-0f7c33564ebb"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Here's an explanation of Generative AI in two bullet points:\n",
+            "\n",
+            "*   **Generative AI creates new content** (like text, images, audio, or video) that didn't exist before, rather than just analyzing or processing existing data.\n",
+            "*   It does this by **learning patterns and structures from massive amounts of training data**, enabling it to generate outputs that are realistic, coherent, and often resemble human-made creations.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "aivThNd-gzf7"
+      },
+      "outputs": [],
+      "source": [
+        "from IPython.display import HTML"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VDWhgxCy5bA6"
+      },
+      "source": [
+        "## Create ChatGPT and Google Gemini Chat Completion Access Function"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "kA9gVCwK0WKd"
+      },
+      "outputs": [],
+      "source": [
+        "def get_completion(prompt, model=\"gpt\"):\n",
+        "  if model == \"gpt\":\n",
+        "    client = OpenAI()\n",
+        "    response = client.responses.create(\n",
+        "        model=\"gpt-5-nano\",\n",
+        "        input=prompt\n",
+        "    )\n",
+        "    return response.output_text\n",
+        "\n",
+        "  if model == \"gemini\":\n",
+        "    client = genai.Client()\n",
+        "    response = client.models.generate_content(\n",
+        "    model=\"gemini-2.5-flash\", contents=prompt\n",
+        "    )\n",
+        "    return response.text\n",
+        "\n",
+        "  else:\n",
+        "    return \"LLM not configured! Please configure logic for specific model in get_completion()\""
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "1pW7KmVygzf_"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "r6L1tETs06Go"
+      },
+      "source": [
+        "## Exercise-1: Text Generation with both ChatGPT and Google Gemini\n",
+        "- Get ChatGPT to generate text by asking it to write a story\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "R0VDZwEG1B8N",
+        "outputId": "6e534c22-3434-4940-c7a4-f5384d616580"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Here’s a simple way to think about it:\n",
+            "\n",
+            "- Encoder model:\n",
+            "  - What it does: Reads the input and turns it into a fixed set of numbers (a hidden representation) that captures the meaning.\n",
+            "  - Output: A compressed, rich representation of the input.\n",
+            "  - Typical tasks: Understanding or classifying text, matching questions to answers, summarizing features.\n",
+            "  - Example: BERT (encoder-only) used for getting a sentence representation.\n",
+            "\n",
+            "- Decoder model:\n",
+            "  - What it does: Writes output text, one token at a time, usually based on a prompt and what it has already written.\n",
+            "  - Output: Generated text.\n",
+            "  - Typical tasks: Generating sentences, completing a prompt, translating text (in some setups).\n",
+            "  - Example: GPT (decoder-only) used for text generation.\n",
+            "\n",
+            "- Encoder–decoder (both together):\n",
+            "  - What they do: The encoder reads the input to produce a context, and the decoder uses that context to generate the output step by step.\n",
+            "  - Output: A sequence in another form (e.g., translate from English to French, summarize a document).\n",
+            "  - Key idea: The decoder attends to the encoder’s output (cross-attention) to condition its generation on the input.\n",
+            "  - Examples: Translation models like the original seq2seq, BART, T5.\n",
+            "\n",
+            "Quick analogy:\n",
+            "- Encoder is like reading a document to understand its meaning.\n",
+            "- Decoder is like writing a response or translation based on that understanding.\n",
+            "- Together, you read the input and then write the appropriate output.\n"
+          ]
+        }
+      ],
+      "source": [
+        "response = get_completion(\"Explain the difference between encoder and decoder models in simple way.\")\n",
+        "print(response)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "065uztCC8m1R",
+        "outputId": "ae3d03e5-246f-4513-8e75-c2047961cde4"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Let's imagine you're trying to send a complex message, but you first need to understand it, and then possibly translate it into another language or summarize it.\n",
+            "\n",
+            "---\n",
+            "\n",
+            "### The Analogy: Secret Agent Communication\n",
+            "\n",
+            "Imagine you're a secret agent, and you have a complex report (the **input data**) you need to send to HQ, but they only understand coded messages, and then they want a new, concise report in their own format.\n",
+            "\n",
+            "---\n",
+            "\n",
+            "### 1. The Encoder Model: The \"Understanding Agent\"\n",
+            "\n",
+            "The **Encoder** is like the agent who *reads, understands, and summarizes* the original complex report.\n",
+            "\n",
+            "*   **What it does:** It takes the messy, raw, human-readable input (e.g., a long English sentence, an image, a piece of audio) and processes it to extract the most important information and condense it into a compact, numerical \"summary\" or \"secret code.\"\n",
+            "*   **Its Goal:** To understand the *essence* or *meaning* of the input, regardless of its original form.\n",
+            "*   **Input:** A sequence of data (words, pixels, sound waves).\n",
+            "*   **Output:** A fixed-size \"thought vector\" or \"context vector\" – this is the compact numerical representation of the input's meaning. It's like the highly compressed secret code of the report.\n",
+            "\n",
+            "**Think of it as:**\n",
+            "*   **Taking a long English sentence** and turning it into a universal \"meaning code.\"\n",
+            "*   **Looking at a picture** and creating a numerical \"description\" of what's in it.\n",
+            "*   **Reading a lengthy article** and boiling it down to its core concepts.\n",
+            "\n",
+            "**When used alone:** An encoder can be used for tasks like understanding text (e.g., classifying sentiment, finding similar documents), where you don't necessarily need to generate new text, just understand the input.\n",
+            "\n",
+            "---\n",
+            "\n",
+            "### 2. The Decoder Model: The \"Generating Agent\"\n",
+            "\n",
+            "The **Decoder** is like the agent at HQ who *receives the secret code* and then *generates a new message* based on that code, in the desired format.\n",
+            "\n",
+            "*   **What it does:** It takes the compact \"secret code\" (the output from the encoder, or sometimes just a simple starting prompt) and expands upon it to generate new, structured, human-readable output.\n",
+            "*   **Its Goal:** To create something new based on the meaning it received.\n",
+            "*   **Input:** The \"thought vector\" or \"context vector\" (the secret code from the encoder) and possibly a starting token.\n",
+            "*   **Output:** A new sequence of data (e.g., a translated sentence, an image caption, a summary, a generated image). It expands the code back into something meaningful.\n",
+            "\n",
+            "**Think of it as:**\n",
+            "*   **Taking that universal \"meaning code\"** and turning it into a German sentence.\n",
+            "*   **Taking the numerical \"description\" of a picture** and generating a descriptive caption (\"A cat sitting on a mat\").\n",
+            "*   **Taking the core concepts of an article** and writing a short summary.\n",
+            "\n",
+            "**When used alone:** A decoder can be used for tasks like generating new text from a simple prompt (e.g., GPT models, where the prompt acts like a very short \"code\" it expands on) or creating images from noise.\n",
+            "\n",
+            "---\n",
+            "\n",
+            "### The Difference in a Nutshell:\n",
+            "\n",
+            "| Feature      | Encoder Model                                 | Decoder Model                                |\n",
+            "| :----------- | :-------------------------------------------- | :------------------------------------------- |\n",
+            "| **Main Role** | **UNDERSTANDS** and **COMPRESSES** input      | **GENERATES** and **EXPANDS** output         |\n",
+            "| **Input**    | Raw, complex, variable-length data (e.g., a sentence) | Compact \"thought vector\" from encoder (or a prompt) |\n",
+            "| **Output**   | A fixed-size \"thought vector\" (secret code)   | New, generated, variable-length data (e.g., a translated sentence) |\n",
+            "| **Analogy**  | The agent making a **secret code** from a report | The agent using the **secret code** to write a new report |\n",
+            "\n",
+            "**They often work together in \"Encoder-Decoder\" models (like for translation):**\n",
+            "1.  **Encoder:** Reads an English sentence, understands its meaning, and turns it into a compact \"thought vector.\"\n",
+            "2.  **Decoder:** Takes that \"thought vector\" and generates a corresponding French sentence.\n",
+            "\n",
+            "So, the **Encoder is about understanding and condensing**, while the **Decoder is about generating and expanding.**\n"
+          ]
+        }
+      ],
+      "source": [
+        "# with Gemini\n",
+        "response = get_completion(\"Explain the difference between encoder and decoder models in simple way.\", model='gemini')\n",
+        "print(response)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "kfnG0qe3gzgC"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "GEVszGl8gzgD"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "1TFZjzuGjCOw"
+      },
+      "source": [
+        "## Exercise-2: Let's try out Zero Shot Prompting!\n",
+        "\n",
+        "- Let's get the model to answer the question about Generative AI\n",
+        "\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "aBm9ef4MgzgD"
+      },
+      "outputs": [],
+      "source": [
+        "from IPython.display import display, Markdown"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "display(Markdown(response))  # beautified response from the Gemini Model"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1000
+        },
+        "id": "KKPMMzwaHXN8",
+        "outputId": "f9d4d024-0d32-456c-d849-036041b85607"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Markdown object>"
+            ],
+            "text/markdown": "Let's imagine you're trying to send a complex message, but you first need to understand it, and then possibly translate it into another language or summarize it.\n\n---\n\n### The Analogy: Secret Agent Communication\n\nImagine you're a secret agent, and you have a complex report (the **input data**) you need to send to HQ, but they only understand coded messages, and then they want a new, concise report in their own format.\n\n---\n\n### 1. The Encoder Model: The \"Understanding Agent\"\n\nThe **Encoder** is like the agent who *reads, understands, and summarizes* the original complex report.\n\n*   **What it does:** It takes the messy, raw, human-readable input (e.g., a long English sentence, an image, a piece of audio) and processes it to extract the most important information and condense it into a compact, numerical \"summary\" or \"secret code.\"\n*   **Its Goal:** To understand the *essence* or *meaning* of the input, regardless of its original form.\n*   **Input:** A sequence of data (words, pixels, sound waves).\n*   **Output:** A fixed-size \"thought vector\" or \"context vector\" – this is the compact numerical representation of the input's meaning. It's like the highly compressed secret code of the report.\n\n**Think of it as:**\n*   **Taking a long English sentence** and turning it into a universal \"meaning code.\"\n*   **Looking at a picture** and creating a numerical \"description\" of what's in it.\n*   **Reading a lengthy article** and boiling it down to its core concepts.\n\n**When used alone:** An encoder can be used for tasks like understanding text (e.g., classifying sentiment, finding similar documents), where you don't necessarily need to generate new text, just understand the input.\n\n---\n\n### 2. The Decoder Model: The \"Generating Agent\"\n\nThe **Decoder** is like the agent at HQ who *receives the secret code* and then *generates a new message* based on that code, in the desired format.\n\n*   **What it does:** It takes the compact \"secret code\" (the output from the encoder, or sometimes just a simple starting prompt) and expands upon it to generate new, structured, human-readable output.\n*   **Its Goal:** To create something new based on the meaning it received.\n*   **Input:** The \"thought vector\" or \"context vector\" (the secret code from the encoder) and possibly a starting token.\n*   **Output:** A new sequence of data (e.g., a translated sentence, an image caption, a summary, a generated image). It expands the code back into something meaningful.\n\n**Think of it as:**\n*   **Taking that universal \"meaning code\"** and turning it into a German sentence.\n*   **Taking the numerical \"description\" of a picture** and generating a descriptive caption (\"A cat sitting on a mat\").\n*   **Taking the core concepts of an article** and writing a short summary.\n\n**When used alone:** A decoder can be used for tasks like generating new text from a simple prompt (e.g., GPT models, where the prompt acts like a very short \"code\" it expands on) or creating images from noise.\n\n---\n\n### The Difference in a Nutshell:\n\n| Feature      | Encoder Model                                 | Decoder Model                                |\n| :----------- | :-------------------------------------------- | :------------------------------------------- |\n| **Main Role** | **UNDERSTANDS** and **COMPRESSES** input      | **GENERATES** and **EXPANDS** output         |\n| **Input**    | Raw, complex, variable-length data (e.g., a sentence) | Compact \"thought vector\" from encoder (or a prompt) |\n| **Output**   | A fixed-size \"thought vector\" (secret code)   | New, generated, variable-length data (e.g., a translated sentence) |\n| **Analogy**  | The agent making a **secret code** from a report | The agent using the **secret code** to write a new report |\n\n**They often work together in \"Encoder-Decoder\" models (like for translation):**\n1.  **Encoder:** Reads an English sentence, understands its meaning, and turns it into a compact \"thought vector.\"\n2.  **Decoder:** Takes that \"thought vector\" and generates a corresponding French sentence.\n\nSo, the **Encoder is about understanding and condensing**, while the **Decoder is about generating and expanding.**"
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 87
+        },
+        "id": "KK-kjmMoi5rO",
+        "outputId": "efa87938-7133-4c6f-c553-6236b466fad7"
+      },
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Markdown object>"
+            ],
+            "text/markdown": "- Generative AI uses models trained on large datasets to create new, original content (text, images, audio, code) that resembles the training data.\n\n- It enables capabilities like chatbots, image/music/code generation, and data augmentation, but comes with considerations around quality, bias, copyright, misinformation, and potential misuse."
+          },
+          "metadata": {}
+        }
+      ],
+      "source": [
+        "response = get_completion(prompt='Explain Generative AI in 2 bullet points')   # using the gpt model by default\n",
+        "display(Markdown(response))"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "response = get_completion(prompt='Explain AI Agents in 5 bullet points', model=\"gemini\") #\n",
+        "display(Markdown(response))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 250
+        },
+        "id": "l6se9pA9Lf_F",
+        "outputId": "ecc56314-ac53-42cb-9796-525f2b9aff13"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Markdown object>"
+            ],
+            "text/markdown": "Here are 5 bullet points explaining AI Agents:\n\n*   **Autonomous Goal-Achievers:** An AI agent is a software program designed to perceive its environment, make decisions, and take actions autonomously to achieve specific, predefined goals or objectives without constant human intervention.\n\n*   **Sense-Think-Act Loop:** They operate in a continuous loop of observing their surroundings (perception), processing information and formulating a plan (thinking), deciding on the best course of action, and then executing those actions (acting).\n\n*   **Tool Utilization:** To accomplish tasks, agents often interact with their environment and other systems using a variety of tools, such as APIs, web browsers, code interpreters, document editors, or specialized software, extending their capabilities far beyond just generating text.\n\n*   **Planning and Memory:** Advanced agents often incorporate planning modules to break down complex goals into smaller, manageable steps, and possess a \"memory\" to store past experiences, learn from outcomes, and maintain context across interactions.\n\n*   **Versatile Applications:** They are being developed for a wide range of applications, including automating complex workflows (e.g., booking travel, managing projects), intelligent personal assistants, data analysis, scientific discovery, and enhancing customer service."
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "VmnwGrskn_oz"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "a0TfeZC7FQTN"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "-O3ubnufFQQA"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# Setting up Anthropic Models"
+      ],
+      "metadata": {
+        "id": "2WBVhBKdFRk-"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "6NDLIaTFgzgF",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "d48cae90-b391-4f5c-ff11-f23c601c1ac0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[?25l   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m0.0/388.2 kB\u001b[0m \u001b[31m?\u001b[0m eta \u001b[36m-:--:--\u001b[0m\r\u001b[2K   \u001b[91m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[90m╺\u001b[0m \u001b[32m378.9/388.2 kB\u001b[0m \u001b[31m12.3 MB/s\u001b[0m eta \u001b[36m0:00:01\u001b[0m\r\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m388.2/388.2 kB\u001b[0m \u001b[31m8.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install anthropic --quiet"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "VGx9M87ggzgF"
+      },
+      "outputs": [],
+      "source": [
+        "os.environ[\"ANTHROPIC_API_KEY\"] = userdata.get('ANTHROPIC_API_KEY')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "aLHqAhm1gzgG",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "55f02e9e-76df-431c-ab05-dd80642929b5"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "# Agentic AI\n",
+            "\n",
+            "• **Autonomous Goal-Oriented Systems**: AI agents that can independently set sub-goals, make decisions, and take actions to achieve complex objectives with minimal human intervention.\n",
+            "\n",
+            "• **Planning and Reasoning**: These systems break down large tasks into smaller steps, create action plans, and adapt their approach based on results and changing conditions.\n",
+            "\n",
+            "• **Tool Use and Integration**: Agentic AI can access and utilize external tools, APIs, databases, and software applications to gather information and execute tasks in the real world.\n",
+            "\n",
+            "• **Iterative Learning and Self-Correction**: Agents observe outcomes of their actions, learn from mistakes, and refine their strategies through feedback loops to improve performance over time.\n",
+            "\n",
+            "• **Multi-Step Task Execution**: Unlike simple chatbots that respond to single prompts, agentic AI can handle complex, multi-stage workflows that may require hours or days to complete, persisting context throughout.\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "from anthropic import Anthropic\n",
+        "\n",
+        "client = Anthropic()\n",
+        "message = client.messages.create(\n",
+        "    max_tokens=1024,\n",
+        "    messages=[{\n",
+        "        \"content\": \"Explain Agentic AI in 5 bullet points.\",\n",
+        "        \"role\": \"user\",\n",
+        "    }],\n",
+        "    model=\"claude-sonnet-4-5\",\n",
+        ")\n",
+        "# print(message.id)\n",
+        "print(message.content[0].text)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "8MD1AgaUDZ_c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 280
+        },
+        "outputId": "88f4ba1d-740a-46e4-d579-a7abc849cdc1"
+      },
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Markdown object>"
+            ],
+            "text/markdown": "# Agentic AI\n\n• **Autonomous Goal-Oriented Systems**: AI agents that can independently set sub-goals, make decisions, and take actions to achieve complex objectives with minimal human intervention.\n\n• **Planning and Reasoning**: These systems break down large tasks into smaller steps, create action plans, and adapt their approach based on results and changing conditions.\n\n• **Tool Use and Integration**: Agentic AI can access and utilize external tools, APIs, databases, and software applications to gather information and execute tasks in the real world.\n\n• **Iterative Learning and Self-Correction**: Agents observe outcomes of their actions, learn from mistakes, and refine their strategies through feedback loops to improve performance over time.\n\n• **Multi-Step Task Execution**: Unlike simple chatbots that respond to single prompts, agentic AI can handle complex, multi-stage workflows that may require hours or days to complete, persisting context throughout."
+          },
+          "metadata": {}
+        }
+      ],
+      "source": [
+        "display(Markdown(message.content[0].text))"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#  HW update the above \"get_completions\" function with this Anthropic code"
+      ],
+      "metadata": {
+        "id": "5O_vSw6sIEKF"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.10.12"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
